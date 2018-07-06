@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: monitoring-worker
+  name: monitoring-worker
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: monitoring-worker
+    spec:
+      containers:
+        - name: monitoring-worker
+          image: kamenevlabs.azurecr.io/monitoring:v0.4
+          env:
+            - name: REDIS_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: redis-pass
+                  key: password
+      imagePullSecrets:
+        - name: regcred
